@@ -1,0 +1,121 @@
+---
+title: "Programming Assignment 4"
+subtitle: "⚔<br/>with <strong>xaringan</strong>"
+author: "Joselyn Rodriguez"
+date: "`r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+
+```{r global-options, include = FALSE}
+# settings
+knitr::opts_chunk$set(
+  comment = '',
+  fig.width = 6,
+  fig.height = 5,
+  echo = FALSE, 
+  warning = FALSE,
+  fig.retina = 2
+)
+```
+
+```{r, libraries, comment = '', echo = FALSE, warning = FALSE}
+library(tidyverse)
+library(ds4ling)
+```
+
+```{r load}
+data <- read_csv("data_raw/fricatives/fricatives.csv")
+head(data)
+```
+
+---
+
+# Tidy the data~
+```{r tidy}
+# I'm sorry this feels like such a hacky way to do this?
+data_tidy <- data %>% 
+  pivot_longer(., cols = c(s_cog:sh_skewness), names_to = "names", values_to = "value") %>% 
+  separate(col = "names", 
+                     into =c("phoneme", "measure"),
+                     sep = "_") %>% 
+  pivot_wider(., names_from = "measure", values_from = "value")
+head(data_tidy)
+write.csv(data_tidy, "tidy_data.csv")
+```
+
+---
+
+# Provide a table of descriptive statistics.
+```{r}
+d_stats <- summary(data_tidy)
+print(d_stats)
+```
+
+---
+
+# Make a boxplot of center of gravity as a function of phoneme. 
+
+```{r}
+# cog ~ phoneme
+data_tidy %>% 
+  ggplot() +
+    geom_boxplot(aes(x = phoneme, y = cog))
+```
+
+
+---
+
+## In another slide, plot skewness as a function of phoneme. Use a statistical transformation (i.e., not a boxplot).
+```{r}
+# skewness ~ phoneme 
+data_tidy %>% 
+  ggplot(aes(x = phoneme, y = skewness)) +
+  geom_jitter() +
+  stat_summary(fun.data = "mean_cl_boot", colour = "blue")
+```
+---
+
+# Fit a model that examines center of gravity as a function of skewness for the [s] segments (hint: you will have to transform the data). Make a table of the model summary.
+
+## Transform data first
+```{r}
+# s_cog ~ s_skewness
+
+# i think you could just do this with the original dataset, but if you wanted to transform again, it'd be:
+data_2 <- data_tidy %>% 
+              pivot_wider(names_from = "phoneme", values_from = c("cog", "skewness"))
+            
+model <- lm(cog_s ~ skewness_s, data = data_2)
+summary(model)
+```
+
+---
+
+# Make a scatter plot that illustrates the relationship in (8).
+```{r}
+data_2 %>% 
+  ggplot(aes(skewness_s, cog_s)) +
+    geom_point() +
+    geom_smooth(method = "lm")
+```
+---
+
+# Check model diagnostics (make plots).
+```{r}
+diagnosis(model)
+```
+---
+
+# Write up the results (as if it were for a journal article).
+
+Fitting a linear regression model with the equation cog_s ~ skewness_s, we found a significant positive relationship such that as the skewness of /s/ increased, the cog of /s/ also increased ( 
+
+
+
