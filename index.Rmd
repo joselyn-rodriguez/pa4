@@ -1,6 +1,5 @@
 ---
 title: "Programming Assignment 4"
-subtitle: "⚔<br/>with <strong>xaringan</strong>"
 author: "Joselyn Rodriguez"
 date: "`r Sys.Date()`"
 output:
