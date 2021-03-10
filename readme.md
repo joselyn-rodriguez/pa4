@@ -1,1 +1,1 @@
-https://joselyn-rodriguez.github.io/pa4/#1
+https://joselyn-rodriguez.github.io/pa4/slides/index.html
