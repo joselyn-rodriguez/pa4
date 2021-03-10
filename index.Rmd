@@ -62,7 +62,7 @@ print(d_stats)
 
 ---
 
-# 7.a Make a boxplot of center of gravity as a function of phoneme. 
+## 7.a Make a boxplot of center of gravity as a function of phoneme. 
 
 ```{r}
 # cog ~ phoneme
