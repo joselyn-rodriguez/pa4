@@ -28,7 +28,7 @@ knitr::opts_chunk$set(
 library(tidyverse)
 library(ds4ling)
 ```
-# 4. First load in the data
+## 4. First load in the data
 ```{r load}
 data <- read_csv("data_raw/fricatives/fricatives.csv")
 head(data, n = 15)
@@ -36,7 +36,7 @@ head(data, n = 15)
 
 ---
 
-# 5. Tidy the data~
+## 5. Tidy the data~
 ```{r tidy}
 # I'm sorry this feels like such a hacky way to do this?
 data_tidy <- data %>% 
@@ -54,7 +54,7 @@ write.csv(data_tidy, "data_tidy/tidy_data.csv")
 
 ---
 
-# 6. Provide a table of descriptive statistics.
+## 6. Provide a table of descriptive statistics.
 ```{r}
 d_stats <- summary(data_tidy)
 print(d_stats)
@@ -107,7 +107,7 @@ summary(model)
 
 ---
 
-# 8. Make a scatter plot that illustrates the relationship in (8).
+## 8. Make a scatter plot that illustrates the relationship in (8).
 ```{r}
 data_2 %>% 
   ggplot(aes(skewness_s, cog_s)) +
@@ -117,7 +117,7 @@ data_2 %>%
 ```
 ---
 
-# 10. Check model diagnostics (make plots).
+## 10. Check model diagnostics (make plots).
 ```{r, fig.width= 10}
 diagnosis(model)
 ```
@@ -125,7 +125,7 @@ diagnosis(model)
 Model diagnositics look alright. Not perfectly normal, but it's not too bad. Residuals look fairly homoskedastic. 
 ---
 
-# 11. Write up the results (as if it were for a journal article).
+## 11. Write up the results (as if it were for a journal article).
 
 Fitting a linear regression model of the skewness of /s/ as a predictor of the center of gravity of /s/, we found a significant positive relationship such that as the skewness of /s/ increased, the center of gravity of /s/ also increased (B = 3029.1, SE = 259.1  p < .001). This suggests that there is a positive linear relationship between the skew of /s/ and it's center of gravity. 
 
