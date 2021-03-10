@@ -13,31 +13,31 @@ output:
 ---
 
 
-```{r global-options, include = FALSE}
-# settings
+```{r message=FALSE, include=FALSE}
 knitr::opts_chunk$set(
   comment = '',
   fig.width = 6,
   fig.height = 5,
-  echo = FALSE, 
-  warning = FALSE,
+  echo = F, 
+  message  = F,
+  warning = F,
   fig.retina = 2
 )
 ```
 
-```{r, libraries, comment = '', echo = FALSE, warning = FALSE}
+```{r libraries}
 library(tidyverse)
 library(ds4ling)
 ```
-
+# 4. First load in the data
 ```{r load}
 data <- read_csv("data_raw/fricatives/fricatives.csv")
-head(data)
+head(data, n = 15)
 ```
 
 ---
 
-# Tidy the data~
+# 5. Tidy the data~
 ```{r tidy}
 # I'm sorry this feels like such a hacky way to do this?
 data_tidy <- data %>% 
@@ -46,13 +46,16 @@ data_tidy <- data %>%
                      into =c("phoneme", "measure"),
                      sep = "_") %>% 
   pivot_wider(., names_from = "measure", values_from = "value")
-head(data_tidy)
-write.csv(data_tidy, "tidy_data.csv")
+
+head(data_tidy, n = 15)
+
+# write out to csv
+write.csv(data_tidy, "data_tidy/tidy_data.csv")
 ```
 
 ---
 
-# Provide a table of descriptive statistics.
+# 6. Provide a table of descriptive statistics.
 ```{r}
 d_stats <- summary(data_tidy)
 print(d_stats)
@@ -60,62 +63,72 @@ print(d_stats)
 
 ---
 
-# Make a boxplot of center of gravity as a function of phoneme. 
+# 7.a Make a boxplot of center of gravity as a function of phoneme. 
 
 ```{r}
 # cog ~ phoneme
 data_tidy %>% 
   ggplot() +
-    geom_boxplot(aes(x = phoneme, y = cog))
+    geom_boxplot(aes(x = phoneme, y = cog)) +
+    labs(title = "center of gravity of phonemes /s/ and /ʃ/")
 ```
 
 
 ---
 
-## In another slide, plot skewness as a function of phoneme. Use a statistical transformation (i.e., not a boxplot).
+## 7.b In another slide, plot skewness as a function of phoneme. Use a statistical transformation (i.e., not a boxplot).
 ```{r}
 # skewness ~ phoneme 
 data_tidy %>% 
   ggplot(aes(x = phoneme, y = skewness)) +
   geom_jitter() +
-  stat_summary(fun.data = "mean_cl_boot", colour = "blue")
+  stat_summary(fun.data = "mean_cl_boot", colour = "blue") +
+  labs(title = "skewness of phonemes /s/ and /ʃ/")
 ```
 ---
 
-# Fit a model that examines center of gravity as a function of skewness for the [s] segments (hint: you will have to transform the data). Make a table of the model summary.
+## 8.a Fit a model that examines center of gravity as a function of skewness for the [s] segments. 
 
-## Transform data first
 ```{r}
 # s_cog ~ s_skewness
+
+# Transform data first 
 
 # i think you could just do this with the original dataset, but if you wanted to transform again, it'd be:
 data_2 <- data_tidy %>% 
               pivot_wider(names_from = "phoneme", values_from = c("cog", "skewness"))
-            
+```
+
+
+#### 8.b Make a table of the model summary.
+```{r}
 model <- lm(cog_s ~ skewness_s, data = data_2)
 summary(model)
 ```
 
 ---
 
-# Make a scatter plot that illustrates the relationship in (8).
+# 8. Make a scatter plot that illustrates the relationship in (8).
 ```{r}
 data_2 %>% 
   ggplot(aes(skewness_s, cog_s)) +
     geom_point() +
-    geom_smooth(method = "lm")
+    geom_smooth(method = "lm") +
+    labs(title = "center of gravity of /s/ by its skewness")
 ```
 ---
 
-# Check model diagnostics (make plots).
-```{r}
+# 10. Check model diagnostics (make plots).
+```{r, fig.width= 10}
 diagnosis(model)
 ```
+
+Model diagnositics look alright. Not perfectly normal, but it's not too bad. Residuals look fairly homoskedastic. 
 ---
 
-# Write up the results (as if it were for a journal article).
+# 11. Write up the results (as if it were for a journal article).
 
-Fitting a linear regression model with the equation cog_s ~ skewness_s, we found a significant positive relationship such that as the skewness of /s/ increased, the cog of /s/ also increased ( 
+Fitting a linear regression model of the skewness of /s/ as a predictor of the center of gravity of /s/, we found a significant positive relationship such that as the skewness of /s/ increased, the center of gravity of /s/ also increased (B = 3029.1, SE = 259.1  p < .001). This suggests that there is a positive linear relationship between the skew of /s/ and it's center of gravity. 
 
 
 

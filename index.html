@@ -4,7 +4,7 @@
     <title>Programming Assignment 4</title>
     <meta charset="utf-8" />
     <meta name="author" content="Joselyn Rodriguez" />
-    <meta name="date" content="2021-03-05" />
+    <meta name="date" content="2021-03-10" />
     <script src="libs/header-attrs-2.6/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
@@ -16,7 +16,7 @@ class: center, middle, inverse, title-slide
 # Programming Assignment 4
 ## ⚔<br/>with <strong>xaringan</strong>
 ### Joselyn Rodriguez
-### 2021-03-05
+### 2021-03-10
 
 ---
 
@@ -25,79 +25,57 @@ class: center, middle, inverse, title-slide
 
 
 
-```
-── Attaching packages ─────────────────────────────────────── tidyverse 1.3.0 ──
-```
+# 4. First load in the data
 
 ```
-✓ ggplot2 3.3.3     ✓ purrr   0.3.4
-✓ tibble  3.0.6     ✓ dplyr   1.0.4
-✓ tidyr   1.1.2     ✓ stringr 1.4.0
-✓ readr   1.4.0     ✓ forcats 0.5.1
-```
-
-```
-── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-x dplyr::filter() masks stats::filter()
-x dplyr::lag()    masks stats::lag()
-```
-
-```
-Registered S3 method overwritten by 'broom.mixed':
-  method      from 
-  tidy.gamlss broom
-```
-
-```
-
- ds4ling loaded
- Happy coding!
-```
-
-
-```
-
-── Column specification ────────────────────────────────────────────────────────
-cols(
-  obs = col_double(),
-  s_cog = col_double(),
-  s_skewness = col_double(),
-  sh_cog = col_double(),
-  sh_skewness = col_double()
-)
-```
-
-```
-# A tibble: 6 x 5
-    obs s_cog s_skewness sh_cog sh_skewness
-  &lt;dbl&gt; &lt;dbl&gt;      &lt;dbl&gt;  &lt;dbl&gt;       &lt;dbl&gt;
-1     1 3285.     -1.22   2409.     -0.248 
-2     2 4664.     -1.19   2823.     -0.0165
-3     3 4680.     -1.07   2898.      0.118 
-4     4 4874.     -1.06   3617.      0.198 
-5     5 4879.     -1.03   3668.      0.212 
-6     6 5195.     -0.949  3685.      0.262 
+# A tibble: 15 x 5
+     obs s_cog s_skewness sh_cog sh_skewness
+   &lt;dbl&gt; &lt;dbl&gt;      &lt;dbl&gt;  &lt;dbl&gt;       &lt;dbl&gt;
+ 1     1 3285.     -1.22   2409.     -0.248 
+ 2     2 4664.     -1.19   2823.     -0.0165
+ 3     3 4680.     -1.07   2898.      0.118 
+ 4     4 4874.     -1.06   3617.      0.198 
+ 5     5 4879.     -1.03   3668.      0.212 
+ 6     6 5195.     -0.949  3685.      0.262 
+ 7     7 5455.     -0.909  3875.      0.324 
+ 8     8 5484.     -0.878  3918.      0.494 
+ 9     9 5684.     -0.867  3953.      0.510 
+10    10 5830.     -0.859  3955.      0.522 
+11    11 5890.     -0.701  3957.      0.541 
+12    12 5987.     -0.692  4060.      0.574 
+13    13 6076.     -0.681  4310.      0.589 
+14    14 6094.     -0.625  4334.      0.632 
+15    15 6238.     -0.621  4496.      0.710 
 ```
 
 ---
 
-# Tidy the data~
+# 5. Tidy the data~
 
 ```
-# A tibble: 6 x 4
-    obs phoneme   cog skewness
-  &lt;dbl&gt; &lt;chr&gt;   &lt;dbl&gt;    &lt;dbl&gt;
-1     1 s       3285.  -1.22  
-2     1 sh      2409.  -0.248 
-3     2 s       4664.  -1.19  
-4     2 sh      2823.  -0.0165
-5     3 s       4680.  -1.07  
-6     3 sh      2898.   0.118 
+# A tibble: 15 x 4
+     obs phoneme   cog skewness
+   &lt;dbl&gt; &lt;chr&gt;   &lt;dbl&gt;    &lt;dbl&gt;
+ 1     1 s       3285.  -1.22  
+ 2     1 sh      2409.  -0.248 
+ 3     2 s       4664.  -1.19  
+ 4     2 sh      2823.  -0.0165
+ 5     3 s       4680.  -1.07  
+ 6     3 sh      2898.   0.118 
+ 7     4 s       4874.  -1.06  
+ 8     4 sh      3617.   0.198 
+ 9     5 s       4879.  -1.03  
+10     5 sh      3668.   0.212 
+11     6 s       5195.  -0.949 
+12     6 sh      3685.   0.262 
+13     7 s       5455.  -0.909 
+14     7 sh      3875.   0.324 
+15     8 s       5484.  -0.878 
 ```
 
 ---
 
-# Provide a table of descriptive statistics.
+# 6. Provide a table of descriptive statistics.
 
 ```
       obs          phoneme               cog          skewness      
@@ -111,20 +89,23 @@ cols(
 
 ---
 
-# Make a boxplot of center of gravity as a function of phoneme. 
+# 7.a Make a boxplot of center of gravity as a function of phoneme. 
 
-&lt;img src="index_files/figure-html/unnamed-chunk-2-1.png" width="432" /&gt;
-
-
----
-
-## In another slide, plot skewness as a function of phoneme. Use a statistical transformation (i.e., not a boxplot).
 &lt;img src="index_files/figure-html/unnamed-chunk-3-1.png" width="432" /&gt;
+
+
 ---
 
-# Fit a model that examines center of gravity as a function of skewness for the [s] segments (hint: you will have to transform the data). Make a table of the model summary.
+## 7.b In another slide, plot skewness as a function of phoneme. Use a statistical transformation (i.e., not a boxplot).
+&lt;img src="index_files/figure-html/unnamed-chunk-4-1.png" width="432" /&gt;
+---
 
-## Transform data first
+## 8.a Fit a model that examines center of gravity as a function of skewness for the [s] segments. 
+
+
+
+
+#### 8.b Make a table of the model summary.
 
 ```
 
@@ -149,22 +130,19 @@ F-statistic: 136.6 on 1 and 18 DF,  p-value: 7.691e-10
 
 ---
 
-# Make a scatter plot that illustrates the relationship in (8).
-
-```
-`geom_smooth()` using formula 'y ~ x'
-```
-
-&lt;img src="index_files/figure-html/unnamed-chunk-5-1.png" width="432" /&gt;
+# 8. Make a scatter plot that illustrates the relationship in (8).
+&lt;img src="index_files/figure-html/unnamed-chunk-7-1.png" width="432" /&gt;
 ---
 
-# Check model diagnostics (make plots).
-&lt;img src="index_files/figure-html/unnamed-chunk-6-1.png" width="432" /&gt;
+# 10. Check model diagnostics (make plots).
+&lt;img src="index_files/figure-html/unnamed-chunk-8-1.png" width="720" /&gt;
+
+Model diagnositics look alright. Not perfectly normal, but it's not too bad. Residuals might be slighly homoskedastic, but not by much.
 ---
 
-# Write up the results (as if it were for a journal article).
+# 11. Write up the results (as if it were for a journal article).
 
-Fitting a linear regression model with the equation cog_s ~ skewness_s, we found a significant positive relationship such that as the skewness of /s/ increased, the cog of /s/ also increased ( 
+Fitting a linear regression model of the skewness of /s/ as a predictor of the center of gravity of /s/, we found a significant positive relationship such that as the skewness of /s/ increased, the center of gravity of /s/ also increased (B = 3029.1, SE = 259.1  p &lt; .001). This suggests that there is a positive linear relationship between the skew of /s/ and it's center of gravity. 
 
 
 
