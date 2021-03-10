@@ -30,7 +30,7 @@ library(ds4ling)
 ```
 ## 4. First load in the data
 ```{r load}
-data <- read_csv("data_raw/fricatives/fricatives.csv")
+data <- read_csv("../data_raw/fricatives/fricatives.csv")
 head(data, n = 15)
 ```
 
@@ -49,7 +49,7 @@ data_tidy <- data %>%
 head(data_tidy, n = 15)
 
 # write out to csv
-write.csv(data_tidy, "data_tidy/tidy_data.csv")
+write.csv(data_tidy, "../data_tidy/tidy_data.csv")
 ```
 
 ---
